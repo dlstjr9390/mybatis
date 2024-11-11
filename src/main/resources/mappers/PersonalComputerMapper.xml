@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.greenart.mybatis_ex.mapper.PersonalComputerMapper">
+    <resultMap id="pcResultMap" type="org.greenart.mybatis_ex.domain.PersonalComputerVO">
+        <id property="pcId" column="pc_id"/>
+        <result property="username" column="username"/>
+        <result property="usingPlace" column="using_place"/>
+
+        <collection property="hardwareList" ofType="org.greenart.mybatis_ex.domain.HardwareVO">
+            <id property="hardwareId" column="hardware_id"/>
+            <result property="name" column="name"/>
+            <result property="price" column="price"/>
+            <result property="buyDate" column="buy_date"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectHardwareByPc" resultMap="pcResultMap">
+        select
+            p.username,
+            p.using_place,
+            hw.name,
+            hw.price,
+            hw.buy_date
+        from
+            tbl_pc p
+        left join
+            tbl_hardware hw on hw.pc_id = p.pc_id
+        where
+            p.pc_id = #{pcId}
+
+    </select>
+</mapper>
